@@ -10,9 +10,8 @@
 
  /* includes */
 #include <stdlib.h>
+#include "tree.h"
 #include "y.tab.h"
-
-#include <stdio.h> // TO DELETE
 
  /* prototypes */
 void yyerror( char * );
@@ -22,25 +21,21 @@ void yyerror( char * );
 %}
 
  /* regular definitions */
-whitespace	[ \t\n]+
+whitespace	[ \t]+
 digit		[0-9]
 number		{digit}+(\.{digit}+)?(e[+-]?{digit}+)?
+token		[-+*()\n]
 
 %%
 
 {whitespace}	{ /* no action and no return */ }
 
 {number}	{
-			//fprintf( stderr, "[ NUM: %d ]", atoi( yytext ) );
 			yylval.ival = atoi( yytext );
 			return NUM;
 		}
 
-"+"		{ /*fprintf( stderr, "[ OP: %d ]", ADD );*/ return ADD; }
-"-"		{ /*fprintf( stderr, "[ OP: %d ]", SUB );*/ return SUB; }
-"*"		{ /*fprintf( stderr, "[ OP: %d ]", MUL );*/ return MUL; }
-"("		{ /*fprintf( stderr, yytext );*/ return OP; }
-")"		{ /*fprintf( stderr, yytext );*/ return CP; }
+{token}		{ return yytext[ 0 ]; }
 
 .		{ yyerror( "unrecognized input" ); }
 

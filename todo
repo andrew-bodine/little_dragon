@@ -1,7 +1,3 @@
-syntax tree:
-	how generic can we be with the node definitions? { num, id, op, ... }
-	get print_tree going .: need to determine the max width and height, then print accordingly
-
 symbol table:
 	unique hash table for each scope
 	hash table - hash( id ) indexed array of dynamic length

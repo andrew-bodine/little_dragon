@@ -2,7 +2,7 @@
 # Compilers - Little Dragon
 # module: make
 
-OBJS = lex.yy.o y.tab.o
+OBJS = tree.o lex.yy.o y.tab.o
 CC = gcc
 LEX = lex
 YACC = yacc
@@ -24,6 +24,9 @@ y.tab.c y.tab.h: ldragon.y
 
 lex.yy.c: ldragon.l
 	$(LEX) ldragon.l
+
+tree.o: tree.c tree.h
+	$(CC) $(CFLAGS) tree.c
 
 clean:
 	rm -rf *.o lex.yy.c *.tab.*  ldragon *.output

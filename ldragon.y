@@ -10,6 +10,10 @@
 
 /* includes */
 #include <stdio.h>
+#include "tree.h"
+
+/* pointers */
+t_node *tptr;
 
 /* prototypes */
 int yylex( void );
@@ -21,40 +25,43 @@ void yyerror( char *s );
 
 /* yylval union */
 %union {
-	int ival;	/* integer value */
+	int ival;	/* integer */
+	t_node *tval;	/* syntax tree node */
 };
 
 /* tokens */
-%token OP		/* open parentheses */
-%token CP		/* close parentheses */
-%token ADD		/* add */
-%token SUB		/* subtract*/
-%token MUL		/* multiply */
-%token <ival> NUM	/* number constant */
+%token <ival> NUM
 
 /* precedence */
 %left '+' '-'
 %right '*'
 
+/* types */
+%type <tval> expr
+
 %%
 
-expr	: term expr_		{;}
-	;
-
-expr_	: ADD term expr_	{;}
-	| SUB term expr_	{;}
-	| /* empty */
-	;
-
-term	: factor term_		{;}
+prgm	: expr	'\n'		{ 
+     					print_tree( $1, 0 );
+				}
      	;
 
-term_	: MUL term		{;}
-      	| /* empty */
-	;
-
-factor	: OP expr CP		{;}
-       	| NUM
+expr	: expr '+' expr		{
+     					tptr = new_node( op, $1, $3 );
+					tptr->attr.oval = '+';
+					$$ = tptr;
+				}
+     	| expr '-' expr		{
+					tptr = new_node( op, $1, $3 );
+					tptr->attr.oval = '-';
+					$$ = tptr;
+				}
+	| expr '*' expr		{;}
+	| NUM			{
+					tptr = new_node( num, NULL, NULL );
+					tptr->attr.ival = $1;
+					$$ = tptr;
+				}
 	;
 
 %%

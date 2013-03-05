@@ -1,21 +1,25 @@
 /* test.c */
 
-#include <stdlib.h>
-#include <stdio.h>
 #include "tree.h"
 
 int main( ) {
 
-	tree_node *loper, *roper, *op;
+	t_node *n1, *n2, *n3;
 
-	loper = n_node( 7 );
-	roper = n_node( 13 );
-	op = o_node( '+', loper, roper );
+	n1 = new_node( num, NULL, NULL );
+	n1->attr.ival = 1;
+	n2 = new_node( num, NULL, NULL );
+	n2->attr.ival = 2;
+	n3 = new_node( op, n1, n2 );
+	n3->attr.oval = '+';
 
-	//fprintf( stderr, "%d %c %d\n", op->op.loper->num.value, op->op.value, op->op.roper->num.value);
-	print_tree( op );
+	print_tree( n3, 0 );
 
-	free( loper );
+	destroy_node( n3 );
+
+	print_tree( n3, 0 );
+
+	fprintf( stderr, "n2: %d\n", n3->left->attr.ival );
 
 	return 0;
 }
