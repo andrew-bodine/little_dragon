@@ -24,7 +24,9 @@ void yyerror( char * );
 whitespace	[ \t]+
 digit		[0-9]
 number		{digit}+(\.{digit}+)?(e[+-]?{digit}+)?
-token		[-+*()\n]
+letter		[a-zA-Z_]+
+id		{letter}({letter}|{digit})*
+token		[-+*()\n=]
 
 %%
 
@@ -33,6 +35,11 @@ token		[-+*()\n]
 {number}	{
 			yylval.ival = atoi( yytext );
 			return NUM;
+		}
+
+{id}		{ 
+			yylval.sval = strdup( yytext );
+			return ID;
 		}
 
 {token}		{ return yytext[ 0 ]; }

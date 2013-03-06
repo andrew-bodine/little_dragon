@@ -14,7 +14,8 @@
 /* enums */
 typedef enum {
 	num,
-	op
+	op,
+	id
 } node_type;
 
 /* structs */
@@ -23,6 +24,7 @@ typedef struct t_node {
 	union {
 		int ival;	/* NUM */
 		int oval;	/* OP */
+		char *id;	/* ID */
 	} attr;
 	struct t_node *left, *right;
 } t_node;

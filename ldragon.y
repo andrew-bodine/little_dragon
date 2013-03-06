@@ -13,7 +13,7 @@
 #include "tree.h"
 
 /* pointers */
-t_node *tptr;
+t_node *tptr, *tptr2;
 
 /* prototypes */
 int yylex( void );
@@ -27,27 +27,39 @@ void yyerror( char *s );
 %union {
 	int ival;	/* integer */
 	t_node *tval;	/* syntax tree node */
+	char *sval;	/* id */
 };
 
 /* tokens */
 %token <ival> NUM
+%token <sval> ID
 
 /* precedence */
 %left '+' '-'
 %right '*'
 
 /* types */
-%type <tval> prgm prgm_ expr
+%type <tval> stmt expr
 
 %%
 
-prgm	: expr '\n' prgm_	{ print_tree( $1, 0 ); }
+prgm	: stmt '\n' prgm_	{ 	print_tree( $1, 0 ); }
      	;
 
-prgm_	: expr '\n' prgm_	{ print_tree( $1, 0 );}
-      	| '\n'			{;}
-	| /* empty */		{;}
+prgm_	: stmt '\n' prgm_	{ 	print_tree( $1, 0 );}
+      	| '\n'			{	;}
+	| /* empty */		{	;}
       	;
+
+stmt	: ID '=' expr		{ 
+     					tptr = new_node( id, NULL, NULL );
+					tptr->attr.id = $1;
+					tptr2 = new_node( op, tptr, $3 );
+					tptr2->attr.oval = '=';
+					$$ = tptr2;
+				}
+     	| expr			{ 	print_tree( $1, 0 ); }
+     	;
 
 expr	: expr '+' expr		{
      					tptr = new_node( op, $1, $3 );
