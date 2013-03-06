@@ -37,14 +37,17 @@ void yyerror( char *s );
 %right '*'
 
 /* types */
-%type <tval> expr
+%type <tval> prgm prgm_ expr
 
 %%
 
-prgm	: expr	'\n'		{ 
-     					print_tree( $1, 0 );
-				}
+prgm	: expr '\n' prgm_	{ print_tree( $1, 0 ); }
      	;
+
+prgm_	: expr '\n' prgm_	{ print_tree( $1, 0 );}
+      	| '\n'			{;}
+	| /* empty */		{;}
+      	;
 
 expr	: expr '+' expr		{
      					tptr = new_node( op, $1, $3 );
@@ -56,7 +59,11 @@ expr	: expr '+' expr		{
 					tptr->attr.oval = '-';
 					$$ = tptr;
 				}
-	| expr '*' expr		{;}
+	| expr '*' expr		{
+					tptr = new_node( op, $1, $3 );
+					tptr->attr.oval = '*';
+					$$ = tptr;
+				}
 	| NUM			{
 					tptr = new_node( num, NULL, NULL );
 					tptr->attr.ival = $1;
