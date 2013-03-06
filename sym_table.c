@@ -7,7 +7,7 @@
 #include "sym_table.h"
 
 /* definitions */
-entry *new_entry( scope *stack, char *name, int value ) {
+entry *new_entry( scope *stack, char *name ) {
 	entry *ptr;
 	int index;
 
@@ -20,7 +20,7 @@ entry *new_entry( scope *stack, char *name, int value ) {
 
 	/* set info */
 	ptr->name = strdup( name );
-	ptr->value = value;
+	ptr->value = NULL;
 	ptr->next = NULL;
 
 	/* insert new entry */
@@ -87,7 +87,10 @@ void print_symstack( scope *stack ) {
 		for( i = 0; i < TABLE_SIZE; i++ ) {
 			if( ( e = s->sym_t[ i ] ) != NULL ) {
 				while( e != NULL ) {
-					fprintf( stderr, "[%s:%d] ", e->name, e->value );
+					if( e->value != NULL )
+						fprintf( stderr, "[%s:%d] ", e->name, *( e->value ) );
+					else
+						fprintf( stderr, "[%s:null] ", e->name );
 					e = e->next;
 				}
 				fprintf( stderr, "\n" );

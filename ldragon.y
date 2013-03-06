@@ -11,9 +11,12 @@
 /* includes */
 #include <stdio.h>
 #include "tree.h"
+#include "sym_table.h"
 
 /* pointers */
 t_node *tptr, *tptr2;
+scope *sptr;
+entry *eptr;
 
 /* prototypes */
 int yylex( void );
@@ -43,7 +46,10 @@ void yyerror( char *s );
 
 %%
 
-prgm	: stmt '\n' prgm_	{ 	print_tree( $1, 0 ); }
+prgm	: stmt '\n' prgm_	{ 	
+     					print_tree( $1, 0 );
+					print_symstack( sptr );
+     				}
      	;
 
 prgm_	: stmt '\n' prgm_	{ 	print_tree( $1, 0 );}
@@ -52,11 +58,13 @@ prgm_	: stmt '\n' prgm_	{ 	print_tree( $1, 0 );}
       	;
 
 stmt	: ID '=' expr		{ 
-     					tptr = new_node( id, NULL, NULL );
-					tptr->attr.id = $1;
+     					eptr = new_entry( sptr, $1 );
+					tptr = new_node( id, NULL, NULL );
+					tptr->attr.id = eptr;
 					tptr2 = new_node( op, tptr, $3 );
 					tptr2->attr.oval = '=';
 					$$ = tptr2;
+					// set *( eptr->value ) = eval_stmt( $$ );
 				}
      	| expr			{ 	print_tree( $1, 0 ); }
      	;
@@ -76,6 +84,10 @@ expr	: expr '+' expr		{
 					tptr->attr.oval = '*';
 					$$ = tptr;
 				}
+	| '(' expr ')'		{	$$ = $2; }
+
+	/* IDENT */
+
 	| NUM			{
 					tptr = new_node( num, NULL, NULL );
 					tptr->attr.ival = $1;
@@ -90,6 +102,7 @@ void yyerror( char *s ) {
 }
 
 int main( void ) {
+	sptr = push_scope( sptr );
 	yyparse( );
 	return 0;
 }

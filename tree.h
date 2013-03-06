@@ -10,6 +10,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <assert.h>
+#include "sym_table.h"
 
 /* enums */
 typedef enum {
@@ -24,7 +25,9 @@ typedef struct t_node {
 	union {
 		int ival;	/* NUM */
 		int oval;	/* OP */
-		char *id;	/* ID */
+		entry *id;	/* ID */
+
+		//char *id;	/* ID */
 	} attr;
 	struct t_node *left, *right;
 } t_node;

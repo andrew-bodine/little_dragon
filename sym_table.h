@@ -19,7 +19,7 @@
 /* structs */
 typedef struct entry {
 	char *name;
-	int value;
+	int *value;
 	struct entry *next;
 } entry; // id entry
 typedef struct scope {
@@ -28,7 +28,7 @@ typedef struct scope {
 } scope; // scope entry
 
 /* prototypes */
-entry *new_entry( scope *stack, char *name, int value );
+entry *new_entry( scope *stack, char *name );
 void destroy_entry( entry *to_delete );
 scope *push_scope( scope *stack );
 scope *pop_scope( scope *stack );

@@ -1,11 +1,9 @@
-symbol table:
-	unique hash table for each scope
-	hash table - hash( id ) indexed array of dynamic length
-	each hash table entry points to a linked list of ids .: LL necessary in case of hash collisions -> compare on name to find correct id
-	need a stack-like implementation for supporting scopes .: LL of hash tables? array of hash table pointers?
+-- next --
+implement ID in stmt
+implement entry_lookup()
+add in scoping '[' ... ']'
 
+semantic evaluation:
+	...
 code generation:
 	ughh
-
--- next --
-add in scoping '[' ... ']'

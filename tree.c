@@ -43,7 +43,10 @@ void print_tree( t_node *root, int spaces ) {
 		fprintf( stderr, "[NUM:%d]", root->attr.ival );
 		break;
 	case id:
-		fprintf( stderr, "[ID:%s]", root->attr.id );
+		if( root->attr.id->value == NULL )
+			fprintf( stderr, "[ID:%s:null]", root->attr.id->name );
+		else
+			fprintf( stderr, "[ID:%s:%d]", root->attr.id->name, *( root->attr.id->value ) );
 		break;
 	default:
 		fprintf( stderr, "[UNKNOWN]" );
