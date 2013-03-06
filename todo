@@ -5,8 +5,7 @@ symbol table:
 	need a stack-like implementation for supporting scopes .: LL of hash tables? array of hash table pointers?
 
 code generation:
-
+	ughh
 
 -- next --
 add in scoping '[' ... ']'
-add in assignment '='
