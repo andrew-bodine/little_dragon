@@ -1,7 +1,6 @@
 -- next --
+add in scoping '[' ... ']' -> push and pop appropriately
 implement ID in stmt
-implement entry_lookup()
-add in scoping '[' ... ']'
 
 semantic evaluation:
 	...
