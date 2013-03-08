@@ -42,19 +42,29 @@ void yyerror( char *s );
 %right '*'
 
 /* types */
-%type <tval> stmt expr
+%type <tval> stmts stmt expr
+
+/* start */
+%start prgm
 
 %%
 
-prgm	: stmt '\n' prgm_	{ 	
-     					print_tree( $1, 0 );
+prgm	: '\n' prgm		{	/* ignore before { */; }
+     	| '{' 			{ 	sptr = push_scope( sptr ); }
+	  stmts 
+	  '}' post		{ 	
 					print_symstack( sptr );
-     				}
+					sptr = pop_scope( sptr );
+			}
      	;
 
-prgm_	: stmt '\n' prgm_	{ 	print_tree( $1, 0 );}
-      	| '\n'			{	;}
-	| /* empty */		{	;}
+post	: '\n' post		{	/* ignore after */; }
+	| /* empty */		{;}
+	;
+
+stmts	: stmt stmts		{	$$ = $1; }	
+      	| '\n' stmts		{;}
+	| /* empty */		{;}
       	;
 
 stmt	: ID '=' expr		{ 
@@ -64,9 +74,10 @@ stmt	: ID '=' expr		{
 					tptr2 = new_node( op, tptr, $3 );
 					tptr2->attr.oval = '=';
 					$$ = tptr2;
+					print_tree( $$, 0 );
 					// set *( eptr->value ) = eval_stmt( $$ );
 				}
-     	| expr			{ 	print_tree( $1, 0 ); }
+	| expr			{	print_tree( $1, 0 ); }
      	;
 
 expr	: expr '+' expr		{
@@ -102,7 +113,6 @@ void yyerror( char *s ) {
 }
 
 int main( void ) {
-	sptr = push_scope( sptr );
 	yyparse( );
 	return 0;
 }

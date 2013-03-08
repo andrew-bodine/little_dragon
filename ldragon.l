@@ -26,7 +26,7 @@ digit		[0-9]
 number		{digit}+(\.{digit}+)?(e[+-]?{digit}+)?
 letter		[a-zA-Z_]+
 id		{letter}({letter}|{digit})*
-token		[-+*()\n=]
+token		[-+*()\n={}]
 
 %%
 
