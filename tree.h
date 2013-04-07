@@ -26,8 +26,6 @@ typedef struct t_node {
 		int ival;	/* NUM */
 		int oval;	/* OP */
 		entry *id;	/* ID */
-
-		//char *id;	/* ID */
 	} attr;
 	struct t_node *left, *right;
 } t_node;

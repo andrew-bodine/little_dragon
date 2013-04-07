@@ -20,6 +20,8 @@ void yyerror( char * );
 
 %}
 
+%option nounput noinput
+
  /* regular definitions */
 whitespace	[ \t]+
 digit		[0-9]

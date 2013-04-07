@@ -10,7 +10,6 @@
 #include <stdlib.h>
 #include <assert.h>
 #include <string.h>
-
 #include <stdio.h>
 
 /* constants */
@@ -19,7 +18,7 @@
 /* structs */
 typedef struct entry {
 	char *name;
-	int *value;
+	int value;
 	struct entry *next;
 } entry; // id entry
 typedef struct scope {

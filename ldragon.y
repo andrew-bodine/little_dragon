@@ -12,6 +12,7 @@
 #include <stdio.h>
 #include "tree.h"
 #include "sym_table.h"
+#include "semantics.h"
 
 /* pointers */
 t_node *tptr, *tptr2;
@@ -55,7 +56,7 @@ prgm	: '\n' prgm		{	/* ignore before { */; }
 	  '}' post		{ 	
 					print_symstack( sptr );
 					sptr = pop_scope( sptr );
-			}
+				}
      	;
 
 post	: '\n' post		{	/* ignore after */; }
@@ -74,8 +75,9 @@ stmt	: ID '=' expr		{
 					tptr2 = new_node( op, tptr, $3 );
 					tptr2->attr.oval = '=';
 					$$ = tptr2;
+					eval_stmt( $$ );
+					//fprintf( stderr, "%s = %d\n", eptr->name, eval_stmt( $$ ) );
 					print_tree( $$, 0 );
-					// set *( eptr->value ) = eval_stmt( $$ );
 				}
 	| expr			{	print_tree( $1, 0 ); }
      	;

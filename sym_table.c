@@ -20,7 +20,7 @@ entry *new_entry( scope *stack, char *name ) {
 
 	/* set info */
 	ptr->name = strdup( name );
-	ptr->value = NULL;
+	ptr->value = 0;
 	ptr->next = NULL;
 
 	/* insert new entry */
@@ -120,10 +120,7 @@ void print_symstack( scope *stack ) {
 		for( i = 0; i < TABLE_SIZE; i++ ) {
 			if( ( e = s->sym_t[ i ] ) != NULL ) {
 				while( e != NULL ) {
-					if( e->value != NULL )
-						fprintf( stderr, "[%s:%d] ", e->name, *( e->value ) );
-					else
-						fprintf( stderr, "[%s:null] ", e->name );
+					fprintf( stderr, "[%s:%d]", e->name, e->value );
 					e = e->next;
 				}
 				fprintf( stderr, "\n" );
