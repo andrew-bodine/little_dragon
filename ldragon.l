@@ -34,6 +34,8 @@ token		[-+*()\n={}]
 
 {whitespace}	{ /* no action and no return */ }
 
+"print"		{ return PRINT; }
+
 {number}	{
 			yylval.ival = atoi( yytext );
 			return NUM;

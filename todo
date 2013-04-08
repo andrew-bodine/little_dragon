@@ -1,7 +1,4 @@
 -- next --
-add in scoping '[' ... ']' -> push and pop appropriately
-implement ID in stmt
-
 semantic evaluation:
 	...
 code generation:

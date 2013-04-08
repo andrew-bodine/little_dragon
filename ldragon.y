@@ -10,6 +10,7 @@
 
 /* includes */
 #include <stdio.h>
+#include <stdlib.h>
 #include "tree.h"
 #include "sym_table.h"
 #include "semantics.h"
@@ -37,6 +38,7 @@ void yyerror( char *s );
 /* tokens */
 %token <ival> NUM
 %token <sval> ID
+%token PRINT
 
 /* precedence */
 %left '+' '-'
@@ -69,15 +71,23 @@ stmts	: stmt stmts		{	$$ = $1; }
       	;
 
 stmt	: ID '=' expr		{ 
-     					eptr = new_entry( sptr, $1 );
+     					eptr = find_entry( sptr, $1 );
+					if( eptr == NULL )
+     						eptr = new_entry( sptr, $1 );
 					tptr = new_node( id, NULL, NULL );
 					tptr->attr.id = eptr;
 					tptr2 = new_node( op, tptr, $3 );
 					tptr2->attr.oval = '=';
 					$$ = tptr2;
 					eval_stmt( $$ );
-					//fprintf( stderr, "%s = %d\n", eptr->name, eval_stmt( $$ ) );
 					print_tree( $$, 0 );
+				}
+	| PRINT			{	fprintf( stderr, "PRINTING :)\n" ); }
+	| '{'			{	sptr = push_scope( sptr ); }
+	  stmts
+	  '}' post		{
+					print_symstack( sptr );
+					sptr = pop_scope( sptr );
 				}
 	| expr			{	print_tree( $1, 0 ); }
      	;
@@ -98,9 +108,13 @@ expr	: expr '+' expr		{
 					$$ = tptr;
 				}
 	| '(' expr ')'		{	$$ = $2; }
-
-	/* IDENT */
-
+	| ID			{
+					eptr = find_entry( sptr, $1 );
+					assert( eptr != NULL );
+					tptr = new_node( id, NULL, NULL );
+					tptr->attr.id = eptr;
+					$$ = tptr;
+				}
 	| NUM			{
 					tptr = new_node( num, NULL, NULL );
 					tptr->attr.ival = $1;
