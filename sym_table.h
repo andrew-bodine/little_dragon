@@ -24,7 +24,7 @@ typedef struct entry {
 typedef struct scope {
 	entry *sym_t[ TABLE_SIZE ];
 	struct scope *parent;
-} scope; // scope entry
+} scope; // scope level
 
 /* prototypes */
 entry *new_entry( scope *stack, char *name );

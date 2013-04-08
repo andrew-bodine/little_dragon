@@ -1,5 +1,3 @@
 -- next --
-semantic evaluation:
-	...
 code generation:
-	ughh
+	keep implementing register stack functionalities
