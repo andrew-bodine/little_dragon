@@ -42,13 +42,15 @@ int eval_stmt( t_node *ptr ) {
 	 * come back to this!!! */
 	switch( ptr->attr.oval ) {
 	case '=':
-	id = ptr->left;
+		id = ptr->left;
 		assert( id != NULL );
 		assert( ptr->right != NULL );
 		value = eval_tree( ptr->right );
 		assert( id->attr.id != NULL );
 		id->attr.id->value = value;
-
+		return value;
+	case 'p':
+		value = eval_tree( ptr->left );
 		return value;
 	default:
 		fprintf( stderr, "Unknown operator type: %d\n", ptr->attr.oval );

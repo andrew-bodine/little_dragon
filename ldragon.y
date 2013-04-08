@@ -82,7 +82,12 @@ stmt	: ID '=' expr		{
 					eval_stmt( $$ );
 					print_tree( $$, 0 );
 				}
-	| PRINT			{	fprintf( stderr, "PRINTING :)\n" ); }
+	| PRINT	expr		{	
+					tptr = new_node( op, $2, NULL );
+					tptr->attr.oval = 'p';
+					$$ = tptr;
+					fprintf( stderr, "\t\tValue >> %d\n", eval_stmt( $$ ) );
+				}
 	| '{'			{	sptr = push_scope( sptr ); }
 	  stmts
 	  '}' post		{
