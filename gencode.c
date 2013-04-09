@@ -63,30 +63,39 @@ void print_rstack( r_node *rstack ) {
 		print_rstack( rstack->next );
 	}
 }
-void label( t_node *root ) {
-	label_rec( root );
+void label( t_node *root, int type ) {
+	if( type == 0 ) {
+		
+		/* if only root node to label .: assign rank 0 to skip gencode( ) */
+		if( root->left == NULL && root->right == NULL )
+			root->gcl = 0;
+		else {
+			label( root->left, 1 );
+			label( root->right, 2 );
+			root->gcl = moao( root->left, root->right );
+		}
+	}
+	else if( type == 1 ) {
 
-	/* label_rec doesn't assign label to root, so do that manually */
-	root->gcl = moao( root->left, root->right );
-}
-void label_rec( t_node *root ) {
-	
-	/* left child */
-	if( root->left->left != NULL ) {
-		label_rec( root->left );
-		root->left->gcl = moao( root->left->left, root->left->right );
+		/* left most child .: leaf */
+		if( root->left == NULL && root->right == NULL )
+			root->gcl = 1;
+		else {
+			label( root->left, 1 );
+			label( root->right, 2 );
+			root->gcl = moao( root->left, root->right );
+		}
 	}
 	else {
-		root->left->gcl = 1;
-	}
-
-	/* right child */
-	if( root->right->left != NULL ) {
-		label_rec( root->right );
-		root->right->gcl = moao( root->right->left, root->right->right );
-	}
-	else {
-		root->right->gcl = 0;
+		
+		/* right most child .: leaf */
+		if( root->left == NULL && root->right == NULL )
+			root->gcl = 0;
+		else {
+			label( root->left, 1 );
+			label( root->right, 2 );
+			root->gcl = moao( root->left, root->right );
+		}
 	}
 }
 int moao( t_node *left, t_node *right ) {
@@ -100,4 +109,14 @@ int moao( t_node *left, t_node *right ) {
 		return left->gcl;
 	else
 		return right->gcl;
+}
+void gencode( t_node *root, r_node *rstack ) {
+	
+	/* case 0 */
+	if( root->left == NULL && root->right == NULL ) {
+		if( root->type == num )
+			fprintf( stderr, "MOV %d, R%d\n", root->attr.ival, rstack->number );
+		else if( root->type == id )
+			fprintf( stderr, "MOV %s, R%d\n", root->attr.id->name, rstack->number );
+	}
 }

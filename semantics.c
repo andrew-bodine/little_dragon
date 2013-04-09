@@ -51,7 +51,9 @@ int eval_stmt( t_node *ptr ) {
 
 		/* gencode */
 		r_node *rstack = init_rstack( );
-		label( ptr->right );
+		label( ptr->right, 0 );
+		//gencode( ptr->right, rstack );
+		//fprintf( stderr, "MOV R%d, %s\n", rstack->number, id->attr.id->name );
 		destroy_rstack( rstack );
 
 		return value;

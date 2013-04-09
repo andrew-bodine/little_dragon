@@ -86,7 +86,7 @@ stmt	: ID '=' expr		{
 					tptr = new_node( op, $2, NULL );
 					tptr->attr.oval = 'p';
 					$$ = tptr;
-					fprintf( stderr, "\t\tValue >> %d\n", eval_stmt( $$ ) );
+					fprintf( stderr, "\tValue >> %d\n", eval_stmt( $$ ) );
 				}
 	| '{'			{	sptr = push_scope( sptr ); }
 	  stmts
