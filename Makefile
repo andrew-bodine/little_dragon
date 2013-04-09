@@ -2,7 +2,7 @@
 # Compilers - Little Dragon
 # module: make
 
-OBJS = semantics.o sym_table.o tree.o lex.yy.o y.tab.o
+OBJS = gencode.o semantics.o sym_table.o tree.o lex.yy.o y.tab.o
 CC = gcc
 LEX = lex
 YACC = yacc
@@ -31,8 +31,11 @@ tree.o: tree.c tree.h sym_table.h
 sym_table.o: sym_table.c sym_table.h
 	$(CC) $(CFLAGS) sym_table.c
 
-semantics.o: semantics.c semantics.h tree.h
+semantics.o: semantics.c semantics.h tree.h gencode.h
 	$(CC) $(CFLAGS) semantics.c
+
+gencode.o: gencode.c gencode.h tree.h
+	$(CC) $(CFLAGS) gencode.c
 
 clean:
 	rm -rf *.o lex.yy.c *.tab.*  ldragon *.output

@@ -63,3 +63,41 @@ void print_rstack( r_node *rstack ) {
 		print_rstack( rstack->next );
 	}
 }
+void label( t_node *root ) {
+	label_rec( root );
+
+	/* label_rec doesn't assign label to root, so do that manually */
+	root->gcl = moao( root->left, root->right );
+}
+void label_rec( t_node *root ) {
+	
+	/* left child */
+	if( root->left->left != NULL ) {
+		label_rec( root->left );
+		root->left->gcl = moao( root->left->left, root->left->right );
+	}
+	else {
+		root->left->gcl = 1;
+	}
+
+	/* right child */
+	if( root->right->left != NULL ) {
+		label_rec( root->right );
+		root->right->gcl = moao( root->right->left, root->right->right );
+	}
+	else {
+		root->right->gcl = 0;
+	}
+}
+int moao( t_node *left, t_node *right ) {
+
+	/* if gcl's are equal .: return gcl + 1 */
+	if( left->gcl == right->gcl )
+		return left->gcl + 1;
+
+	/* else .: return max */
+	else if( left->gcl > right->gcl )
+		return left->gcl;
+	else
+		return right->gcl;
+}

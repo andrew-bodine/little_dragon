@@ -27,6 +27,7 @@ typedef struct t_node {
 		int oval;	/* OP */
 		entry *id;	/* ID */
 	} attr;
+	int gcl;		/* gencode label */
 	struct t_node *left, *right;
 } t_node;
 

@@ -10,6 +10,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
+#include "tree.h"
 
 /* structs */
 typedef struct r_node {
@@ -25,7 +26,8 @@ void destroy_rstack( r_node *rstack );
 r_node *push( r_node *rstack, r_node *new_top );
 r_node *pop( r_node **rstack );
 void print_rstack( r_node *rstack );
-
-char *top( r_node *rstack );
+void label( t_node *root );
+void label_rec( t_node *root );
+int moao( t_node *left, t_node *right ); /* max or add one */
 
 #endif /* gencode.h */

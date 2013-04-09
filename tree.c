@@ -15,6 +15,7 @@ t_node *new_node( node_type type, t_node *left, t_node *right ) {
 
 	/* set info */
 	ptr->type = type;
+	ptr->gcl = -1;
 	ptr->left = left;
 	ptr->right = right;
 
@@ -37,13 +38,13 @@ void print_tree( t_node *root, int spaces ) {
 	
 	switch( root->type ) {
 	case op:
-		fprintf( stderr, "[OP:%c]", root->attr.oval );
+		fprintf( stderr, "[OP:%c|gcl=%d]", root->attr.oval, root->gcl );
 		break;
 	case num:
-		fprintf( stderr, "[NUM:%d]", root->attr.ival );
+		fprintf( stderr, "[NUM:%d|gcl=%d]", root->attr.ival, root->gcl );
 		break;
 	case id:
-		fprintf( stderr, "[ID:%s:%d]", root->attr.id->name, root->attr.id->value );
+		fprintf( stderr, "[ID:%s=%d|gcl=%d]", root->attr.id->name, root->attr.id->value, root->gcl );
 		break;
 	default:
 		fprintf( stderr, "[UNKNOWN]" );

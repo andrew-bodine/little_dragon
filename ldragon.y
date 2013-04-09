@@ -56,7 +56,7 @@ prgm	: '\n' prgm		{	/* ignore before { */; }
      	| '{' 			{ 	sptr = push_scope( sptr ); }
 	  stmts 
 	  '}' post		{ 	
-					print_symstack( sptr );
+					//print_symstack( sptr );
 					sptr = pop_scope( sptr );
 				}
      	;
@@ -91,7 +91,7 @@ stmt	: ID '=' expr		{
 	| '{'			{	sptr = push_scope( sptr ); }
 	  stmts
 	  '}' post		{
-					print_symstack( sptr );
+					//print_symstack( sptr );
 					sptr = pop_scope( sptr );
 				}
 	| expr			{	print_tree( $1, 0 ); }

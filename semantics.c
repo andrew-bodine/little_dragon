@@ -48,6 +48,12 @@ int eval_stmt( t_node *ptr ) {
 		value = eval_tree( ptr->right );
 		assert( id->attr.id != NULL );
 		id->attr.id->value = value;
+
+		/* gencode */
+		r_node *rstack = init_rstack( );
+		label( ptr->right );
+		destroy_rstack( rstack );
+
 		return value;
 	case 'p':
 		value = eval_tree( ptr->left );

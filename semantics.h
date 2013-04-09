@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "tree.h"
+#include "gencode.h"
 
 /* prototypes */
 int eval_tree( t_node *ptr );
