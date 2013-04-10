@@ -80,7 +80,7 @@ stmt	: ID '=' expr		{
 					tptr2->attr.oval = '=';
 					$$ = tptr2;
 					eval_stmt( $$ );
-					print_tree( $$, 0 );
+					//print_tree( $$, 0 );
 				}
 	| PRINT	expr		{	
 					tptr = new_node( op, $2, NULL );
@@ -94,7 +94,9 @@ stmt	: ID '=' expr		{
 					//print_symstack( sptr );
 					sptr = pop_scope( sptr );
 				}
-	| expr			{	print_tree( $1, 0 ); }
+	| expr			{	
+					//print_tree( $1, 0 ); 
+				}
      	;
 
 expr	: expr '+' expr		{

@@ -1,3 +1,0 @@
--- next --
-code generation:
-	implement gencode passing int t_node and rstack

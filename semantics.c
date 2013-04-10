@@ -35,11 +35,10 @@ int eval_tree( t_node *ptr ) {
 int eval_stmt( t_node *ptr ) {
 	int value;
 	t_node *id;
+	r_node *rstack;
 
 	assert( ptr != NULL );
 
-	/* maybe not switching on oval? but type instead?
-	 * come back to this!!! */
 	switch( ptr->attr.oval ) {
 	case '=':
 		id = ptr->left;
@@ -50,15 +49,21 @@ int eval_stmt( t_node *ptr ) {
 		id->attr.id->value = value;
 
 		/* gencode */
-		r_node *rstack = init_rstack( );
+		rstack = init_rstack( );
 		label( ptr->right, 0 );
-		//gencode( ptr->right, rstack );
-		//fprintf( stderr, "MOV R%d, %s\n", rstack->number, id->attr.id->name );
+		gencode( ptr->right, rstack, 0 );
+		fprintf( stderr, "MOV R%d, %s\n", rstack->number, id->attr.id->name );
 		destroy_rstack( rstack );
 
 		return value;
 	case 'p':
 		value = eval_tree( ptr->left );
+
+		/* gencode */
+		rstack = init_rstack( );
+		label( ptr->left, 0 );
+		gencode( ptr->left, rstack, 0 );
+
 		return value;
 	default:
 		fprintf( stderr, "Unknown operator type: %d\n", ptr->attr.oval );
