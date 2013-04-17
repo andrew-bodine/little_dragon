@@ -56,7 +56,6 @@ prgm	: '\n' prgm		{	/* ignore before { */; }
      	| '{' 			{ 	sptr = push_scope( sptr ); }
 	  stmts 
 	  '}' post		{ 	
-					//print_symstack( sptr );
 					sptr = pop_scope( sptr );
 				}
      	;
@@ -80,7 +79,7 @@ stmt	: ID '=' expr		{
 					tptr2->attr.oval = '=';
 					$$ = tptr2;
 					eval_stmt( $$ );
-					//print_tree( $$, 0 );
+					print_tree( $$, 0 );
 				}
 	| PRINT	expr		{	
 					tptr = new_node( op, $2, NULL );
@@ -91,11 +90,10 @@ stmt	: ID '=' expr		{
 	| '{'			{	sptr = push_scope( sptr ); }
 	  stmts
 	  '}' post		{
-					//print_symstack( sptr );
 					sptr = pop_scope( sptr );
 				}
 	| expr			{	
-					//print_tree( $1, 0 ); 
+					print_tree( $1, 0 ); 
 				}
      	;
 
